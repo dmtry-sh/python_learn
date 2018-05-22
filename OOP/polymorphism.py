@@ -1,6 +1,6 @@
 
 
-class Parent:
+class Parent(object):
 	def call(self):
 		print('Parent')
 
@@ -8,7 +8,7 @@ class Child(Parent):
 	def call(self):
 		print('Child')
 
-class Example:
+class Example(object):
 	def call(self):
 		print('Ex')
 
@@ -17,3 +17,4 @@ def call_obj(obj):
 
 call_obj(Child())
 call_obj(Parent())
+call_obj(Example())
