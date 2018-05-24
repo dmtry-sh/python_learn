@@ -33,8 +33,6 @@ def parse(html):
 
 	return projects
 
-
-
 def save(projects, path):
 	with open(path, 'w') as csvfile:
 		writer = csv.writer(csvfile)
@@ -59,10 +57,5 @@ def main():
 
 	print('Парсинг завершён!')
 
-
-
-
-
 if __name__ == '__main__':
 	main()
-
