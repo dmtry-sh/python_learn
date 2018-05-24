@@ -1,5 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup
+import csv
 
 BASE_URL = 'https://www.weblancer.net/jobs/'
 
@@ -26,11 +27,22 @@ def parse(html):
 		projects.append({
 			'title': row.find('a').text,
 			'categories': [category.text for category in row.find_all('a', class_='text-muted')],
-			'amount': row.find('div', class_='amount').text,
+			'amount': '??' if row.find('div', class_='amount').text == '' else row.find('div', class_='amount').text,
 			'applications': int(row.find('div', class_='text_field').text[-24:-20]) if row.find('div', class_='text_field').text[-24:-20] != '' else 0
 			})
 
 	return projects
+
+
+
+def save(projects, path):
+	with open(path, 'w') as csvfile:
+		writer = csv.writer(csvfile)
+		writer.writerow(('Проект', 'Категории', 'Цена', 'Заявки'))
+
+		for project in projects:
+			writer.writerow((project['title'],', '.join(project['categories']), project['amount'], project['applications'])) 
+
 
 def main():
 
@@ -43,9 +55,12 @@ def main():
 		print('Парсинг {} стр.'.format(page))
 		projects.extend(parse(get_html(BASE_URL + '?page={}'.format(page))))
 
-	
-	for project in projects:
-		print(project)
+	save(projects, 'weblancer_projects.csv')
+
+	print('Парсинг завершён!')
+
+
+
 
 
 if __name__ == '__main__':
